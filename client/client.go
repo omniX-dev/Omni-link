@@ -61,6 +61,7 @@ var textExecutorName = map[model.ProviderType]string{
 var imageExecutorName = map[model.ProviderType]string{
 	model.ProviderOpenAI:     "gptimage",
 	model.ProviderMidjourney: "midjourney",
+	model.ProviderSeedream:   "seedream",
 }
 
 // audioExecutorName maps ProviderType → audio executor registry name.
@@ -364,10 +365,9 @@ func (c *Client) videoExecutor() (videoexec.VideoExecutor, error) {
 }
 
 func (c *Client) resolveAPIKey() string {
-	// Try protocol-level API key, then encrypted.
-	// In practice, channel stores the key in ApiKeyEncrypted.
-	if c.channel.ApiKeyEncrypted != "" {
-		return c.channel.ApiKeyEncrypted
+	// Try protocol-level API key, then channel-level.
+	if c.channel.ApiKey != "" {
+		return c.channel.ApiKey
 	}
 	return ""
 }

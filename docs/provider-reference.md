@@ -115,14 +115,15 @@ All Extra passthrough to body.
 
 ---
 
-### Seedream (ByteDance via fal.ai)
+### Seedream (ByteDance — Volcengine Ark / fal.ai dual backend)
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `model` | string | `seedream-4.5` | `seedream-5.0`, `seedream-4.5`, `seedream-4.0` |
+| `model` | string | `doubao-seedream-4-5-251128` | Volcengine: `doubao-seedream-5-0-260128`, `doubao-seedream-4-5-251128`, `doubao-seedream-4-0-250828`; fal.ai: `seedream-5.0`/`4.5`/`4.0` |
 | `prompt` | string | required | Text description |
-| `size` | string | — | Image size (mapped to `image_size`) |
-| `n` | int | 1 | Image count (mapped to `num_images`) |
+| `size` | string | — | Volcengine: `1920x1920` min 3.7Mpx; fal.ai: mapped to `image_size` |
+| `n` | int | 1 | Number of images |
+| `quality` | string | — | `standard` or `hd` (Volcengine only) |
 
 **I2I extra params:**
 | Key | Type | Description |
@@ -130,11 +131,18 @@ All Extra passthrough to body.
 | `image_url` | string | Source image URL |
 | `strength` | float64 | 0-1 transformation degree |
 
-**Endpoints:**
+**Endpoints (Volcengine — default):**
+- T2I: `POST /api/v3/images/generations`
+- I2I: `POST /api/v3/images/generations` (with `image_url`)
+**Auth:** `Authorization: Bearer` (same key as Volcengine text)
+**Base URL:** `https://ark.cn-beijing.volces.com` (built-in default)
+**Pattern:** Sync
+
+**Endpoints (fal.ai — set base URL to `https://fal.run`):**
 - T2I: `POST /fal-ai/seedream/{version}/text-to-image`
 - I2I: `POST /fal-ai/seedream/{version}/image-to-image`
 **Auth:** `Authorization: Key`
-**Pattern:** Sync (fal.ai returns immediately)
+**Pattern:** Sync
 
 ---
 

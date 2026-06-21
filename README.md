@@ -57,7 +57,7 @@ func main() {
             Protocol: model.ProtocolOpenAI,
             BaseURL:  "https://api.openai.com",
         }},
-        ApiKeyEncrypted: "sk-...",
+        ApiKey: "sk-...",
     }
     c := client.NewClient(ch)
 
@@ -262,7 +262,7 @@ Unsupported pairs auto-fallback via OpenAI intermediate hub.
 | **NanoBanana** | ✅ | ❌ | Sync | Bearer | OpenAI-compatible |
 | **Z Image** | ✅ | ❌ | Sync | Bearer | OpenAI-compatible |
 | **Wan** | ✅ | ✅ | Async | Bearer | DashScope wan2.5-t2i/i2i |
-| **Seedream** | ✅ | ✅ | Sync | Key | fal.ai, 5.0/4.5/4.0, sync |
+| **Seedream** | ✅ | ✅ | Sync | Bearer | Volcengine Ark, doubao-seedream models |
 | **Midjourney** | ✅ | ✅ | Async | Bearer | /v1/imagine → poll, I2I via img URL in prompt |
 
 > **Models, endpoints, auth, and Extra params per provider:** [docs/provider-reference.md](docs/provider-reference.md)

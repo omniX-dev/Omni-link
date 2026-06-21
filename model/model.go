@@ -38,6 +38,7 @@ const (
 	ProviderKling      ProviderType = 38
 	ProviderSuno       ProviderType = 39
 	ProviderMidjourney ProviderType = 40
+	ProviderSeedream   ProviderType = 41
 )
 
 // ProtocolType identifies the upstream API protocol format.
@@ -92,7 +93,7 @@ type Channel struct {
 	Description     string          `json:"description"`
 	ProviderType    ProviderType    `json:"provider_type"`
 	Protocols       []ProtocolEntry `json:"protocols"`
-	ApiKeyEncrypted string          `json:"-"`
+	ApiKey  string          `json:"-"`
 	Settings        ChannelSettings `json:"settings"`
 	Status          string          `json:"status"`
 	CreatedAt       int64           `json:"created_at"`
@@ -103,6 +104,20 @@ type Channel struct {
 type ChannelSettings struct {
 	TimeoutSeconds int `json:"timeout_seconds,omitempty"`
 	MaxRetries     int `json:"max_retries,omitempty"`
+}
+
+// GetName returns the channel name.
+func (c *Channel) GetName() string { return c.Name }
+
+// GetAPIKey returns the decrypted API key.
+func (c *Channel) GetAPIKey() string { return c.ApiKey }
+
+// GetBaseURL returns the first protocol's base URL, or "" if none configured.
+func (c *Channel) GetBaseURL() string {
+	if len(c.Protocols) > 0 {
+		return c.Protocols[0].BaseURL
+	}
+	return ""
 }
 
 // ResolveProtocol picks the ProtocolEntry matching the given protocol type.
