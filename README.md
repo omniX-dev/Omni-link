@@ -3,8 +3,8 @@
 **Universal AI Protocol Translation Library** — Go library bridging AI API formats across text, image, audio, video, and embedding.
 
 ```go
-import "github.com/just4zeroq/Omni-link/client"
-import "github.com/just4zeroq/Omni-link/model"
+import "github.com/omniX-dev/OmniX-link/client"
+import "github.com/omniX-dev/OmniX-link/model"
 
 // Unified client — one object for all modalities
 c := client.NewClient(&model.Channel{
@@ -45,7 +45,7 @@ emb, _ := c.Embed(ctx, &embedding.EmbeddingRequest{Model: "text-embedding-v3", I
 ## Quick Start
 
 ```bash
-go get github.com/just4zeroq/Omni-link
+go get github.com/omniX-dev/OmniX-link
 ```
 
 Executor registration follows `database/sql` pattern — blank-import only what you need:
@@ -54,11 +54,11 @@ Executor registration follows `database/sql` pattern — blank-import only what 
 package main
 
 import (
-    "github.com/just4zeroq/Omni-link/client"
-    "github.com/just4zeroq/Omni-link/model"
-    _ "github.com/just4zeroq/Omni-link/executor/text/openai"   // only these compiled
-    _ "github.com/just4zeroq/Omni-link/executor/image/openai"
-    _ "github.com/just4zeroq/Omni-link/executor/embedding/openai"
+    "github.com/omniX-dev/OmniX-link/client"
+    "github.com/omniX-dev/OmniX-link/model"
+    _ "github.com/omniX-dev/OmniX-link/executor/text/openai"   // only these compiled
+    _ "github.com/omniX-dev/OmniX-link/executor/image/openai"
+    _ "github.com/omniX-dev/OmniX-link/executor/embedding/openai"
 )
 
 func main() {
@@ -299,9 +299,9 @@ Omni-link uses Go's `init()` + blank-import pattern (same as `database/sql`):
 
 ```go
 import (
-    _ "github.com/just4zeroq/Omni-link/executor/text/openai"
-    _ "github.com/just4zeroq/Omni-link/executor/image/alibaba"
-    _ "github.com/just4zeroq/Omni-link/executor/embedding/jina"
+    _ "github.com/omniX-dev/OmniX-link/executor/text/openai"
+    _ "github.com/omniX-dev/OmniX-link/executor/image/alibaba"
+    _ "github.com/omniX-dev/OmniX-link/executor/embedding/jina"
 )
 ```
 

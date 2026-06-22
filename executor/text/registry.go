@@ -3,7 +3,7 @@ package executor
 import (
 	"sync"
 
-	"github.com/just4zeroq/Omni-link/translator"
+	"github.com/omniX-dev/OmniX-link/translator"
 )
 
 var (

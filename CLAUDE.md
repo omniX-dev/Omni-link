@@ -70,7 +70,7 @@ Each modality has its own plugin registry and interface under `executor/<modalit
 **Text Executor** — same interface as before, now at `executor/text`:
 
 ```go
-import "github.com/just4zeroq/Omni-link/executor/text"
+import "github.com/omniX-dev/OmniX-link/executor/text"
 func init() { text.Register("claude", &ClaudeExecutor{}) }
 ```
 
@@ -169,11 +169,11 @@ Both buffer incomplete events, handle tool calls, track usage accumulation.
 - SSE parsing skips malformed events (continue), never fails the entire stream
 
 **Import paths:**
-`github.com/just4zeroq/Omni-link/translator`
-`github.com/just4zeroq/Omni-link/executor/text` — text executor
-`github.com/just4zeroq/Omni-link/executor/image` — image executor
-`github.com/just4zeroq/Omni-link/executor/audio` — audio executor
-`github.com/just4zeroq/Omni-link/executor/video` — video executor
+`github.com/omniX-dev/OmniX-link/translator`
+`github.com/omniX-dev/OmniX-link/executor/text` — text executor
+`github.com/omniX-dev/OmniX-link/executor/image` — image executor
+`github.com/omniX-dev/OmniX-link/executor/audio` — audio executor
+`github.com/omniX-dev/OmniX-link/executor/video` — video executor
 
 ## Testing
 

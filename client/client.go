@@ -25,15 +25,15 @@
 // Executors register themselves via init(). Import the subpackages you need:
 //
 //	import (
-//		_ "github.com/just4zeroq/Omni-link/executor/text/openai"
-//		_ "github.com/just4zeroq/Omni-link/executor/text/anthropic"
-//		_ "github.com/just4zeroq/Omni-link/executor/image/openai"
+//		_ "github.com/omniX-dev/OmniX-link/executor/text/openai"
+//		_ "github.com/omniX-dev/OmniX-link/executor/text/anthropic"
+//		_ "github.com/omniX-dev/OmniX-link/executor/image/openai"
 //	)
 //
 // Only imported executors are compiled into the binary — true on-demand loading.
 // For all executors, import:
 //
-//	import _ "github.com/just4zeroq/Omni-link/executor/all"
+//	import _ "github.com/omniX-dev/OmniX-link/executor/all"
 package client
 
 import (
@@ -41,17 +41,17 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/just4zeroq/Omni-link/executor/audio"
-	audioexec "github.com/just4zeroq/Omni-link/executor/audio"
-	"github.com/just4zeroq/Omni-link/executor/image"
-	imageexec "github.com/just4zeroq/Omni-link/executor/image"
-	textexec "github.com/just4zeroq/Omni-link/executor/text"
-	"github.com/just4zeroq/Omni-link/executor/video"
-	videoexec "github.com/just4zeroq/Omni-link/executor/video"
-	"github.com/just4zeroq/Omni-link/executor/embedding"
-	embeddingexec "github.com/just4zeroq/Omni-link/executor/embedding"
-	"github.com/just4zeroq/Omni-link/model"
-	"github.com/just4zeroq/Omni-link/translator"
+	"github.com/omniX-dev/OmniX-link/executor/audio"
+	audioexec "github.com/omniX-dev/OmniX-link/executor/audio"
+	"github.com/omniX-dev/OmniX-link/executor/image"
+	imageexec "github.com/omniX-dev/OmniX-link/executor/image"
+	textexec "github.com/omniX-dev/OmniX-link/executor/text"
+	"github.com/omniX-dev/OmniX-link/executor/video"
+	videoexec "github.com/omniX-dev/OmniX-link/executor/video"
+	"github.com/omniX-dev/OmniX-link/executor/embedding"
+	embeddingexec "github.com/omniX-dev/OmniX-link/executor/embedding"
+	"github.com/omniX-dev/OmniX-link/model"
+	"github.com/omniX-dev/OmniX-link/translator"
 )
 
 // ErrUnsupported is returned when the channel's provider doesn't support a capability.

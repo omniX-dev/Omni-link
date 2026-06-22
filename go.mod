@@ -1,3 +1,3 @@
-module github.com/just4zeroq/Omni-link
+module github.com/omniX-dev/OmniX-link
 
 go 1.23

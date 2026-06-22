@@ -17,7 +17,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/just4zeroq/Omni-link/executor/video"
+	"github.com/omniX-dev/OmniX-link/executor/video"
 )
 
 func init() {
