@@ -1,6 +1,6 @@
 // Package zhipu implements embedding executor for Zhipu (智谱) text embeddings.
 //
-// Endpoint: POST /v1/embeddings
+// Endpoint: POST /embeddings (at /api/paas/v4/embeddings)
 // Models: embedding-3 (supports custom dimensions 256-2048), embedding-2
 // Auth: Authorization: Bearer
 //
@@ -69,7 +69,7 @@ func (e *ZhipuEmbeddingExecutor) Embed(req *embedding.EmbeddingRequest) (*embedd
 	}
 
 	baseURL := strings.TrimSuffix(e.getBaseURL(), "/")
-	url := baseURL + "/v1/embeddings"
+	url := baseURL + "/embeddings"
 
 	httpReq, err := http.NewRequest("POST", url, bytes.NewReader(body))
 	if err != nil {

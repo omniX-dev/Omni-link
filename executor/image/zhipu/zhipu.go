@@ -1,10 +1,10 @@
-// Package zhipu implements ImageExecutor for Zhipu CogView image generation.
+// Package zhipu implements ImageExecutor for Zhipu image generation.
 //
 // Endpoint:
-//   - POST /v1/images/generations — TextToImage, ImageToImage
+//   - POST /images/generations — TextToImage, ImageToImage
 //
-// Models: cogview-4, cogview-3-plus, cogview-3-flash, cogview-3
-// cogview-3-plus supports image_reference via Extra map passthrough.
+// Models: cogview-4, cogview-3-plus, cogview-3-flash, cogview-3, glm-image
+// Supports image_reference via Extra map passthrough.
 package zhipu
 
 import (
@@ -19,26 +19,26 @@ import (
 )
 
 func init() {
-	image.RegisterImage("zhipu", &CogViewExecutor{})
+	image.RegisterImage("zhipu", &ZhipuImageExecutor{})
 }
 
-// CogViewExecutor handles Zhipu CogView image generation.
-type CogViewExecutor struct {
+// ZhipuImageExecutor handles Zhipu image generation (CogView, GLM-Image).
+type ZhipuImageExecutor struct {
 	channel any
 }
 
-func (e *CogViewExecutor) Init(channel any) {
+func (e *ZhipuImageExecutor) Init(channel any) {
 	e.channel = channel
 }
 
-func (e *CogViewExecutor) GetName() string {
+func (e *ZhipuImageExecutor) GetName() string {
 	if ch, ok := e.channel.(interface{ GetName() string }); ok {
 		return ch.GetName()
 	}
-	return "CogView"
+	return "ZhipuImage"
 }
 
-// openaiImageRequest maps to POST /v1/images/generations body.
+// openaiImageRequest maps to POST /images/generations body.
 type openaiImageRequest struct {
 	Model          string `json:"model,omitempty"`
 	Prompt         string `json:"prompt"`
@@ -49,7 +49,7 @@ type openaiImageRequest struct {
 	Style          string `json:"style,omitempty"`
 }
 
-// openaiImageResponse maps to POST /v1/images/generations response.
+// openaiImageResponse maps to POST /images/generations response.
 type openaiImageResponse struct {
 	Created int64 `json:"created"`
 	Data    []struct {
@@ -59,7 +59,7 @@ type openaiImageResponse struct {
 	} `json:"data"`
 }
 
-func (e *CogViewExecutor) getBaseURL() string {
+func (e *ZhipuImageExecutor) getBaseURL() string {
 	if ch, ok := e.channel.(interface{ GetBaseURL() string }); ok {
 		if url := ch.GetBaseURL(); url != "" {
 			return url
@@ -68,14 +68,14 @@ func (e *CogViewExecutor) getBaseURL() string {
 	return "https://open.bigmodel.cn/api/paas/v4"
 }
 
-func (e *CogViewExecutor) getAPIKey() string {
+func (e *ZhipuImageExecutor) getAPIKey() string {
 	if ch, ok := e.channel.(interface{ GetAPIKey() string }); ok {
 		return ch.GetAPIKey()
 	}
 	return ""
 }
 
-func (e *CogViewExecutor) TextToImage(req *image.TextToImageRequest) (*image.ImageTask, error) {
+func (e *ZhipuImageExecutor) TextToImage(req *image.TextToImageRequest) (*image.ImageTask, error) {
 	body := openaiImageRequest{
 		Model:          req.Model,
 		Prompt:         req.Prompt,
@@ -102,10 +102,10 @@ func (e *CogViewExecutor) TextToImage(req *image.TextToImageRequest) (*image.Ima
 
 	payload, err := json.Marshal(body)
 	if err != nil {
-		return nil, fmt.Errorf("cogview: marshal request: %w", err)
+		return nil, fmt.Errorf("zhipu: marshal request: %w", err)
 	}
 
-	resp, err := e.doRequest("/v1/images/generations", payload)
+	resp, err := e.doRequest("/images/generations", payload)
 	if err != nil {
 		return nil, err
 	}
@@ -113,16 +113,16 @@ func (e *CogViewExecutor) TextToImage(req *image.TextToImageRequest) (*image.Ima
 
 	raw, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("cogview: read response: %w", err)
+		return nil, fmt.Errorf("zhipu: read response: %w", err)
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("cogview: HTTP %d: %s", resp.StatusCode, string(raw))
+		return nil, fmt.Errorf("zhipu: HTTP %d: %s", resp.StatusCode, string(raw))
 	}
 
 	var oaiResp openaiImageResponse
 	if err := json.Unmarshal(raw, &oaiResp); err != nil {
-		return nil, fmt.Errorf("cogview: unmarshal response: %w", err)
+		return nil, fmt.Errorf("zhipu: unmarshal response: %w", err)
 	}
 
 	task := &image.ImageTask{
@@ -141,7 +141,7 @@ func (e *CogViewExecutor) TextToImage(req *image.TextToImageRequest) (*image.Ima
 	return task, nil
 }
 
-func (e *CogViewExecutor) ImageToImage(req *image.ImageToImageRequest) (*image.ImageTask, error) {
+func (e *ZhipuImageExecutor) ImageToImage(req *image.ImageToImageRequest) (*image.ImageTask, error) {
 	// Build request as a map to allow merging extra fields (image_reference etc.)
 	m := map[string]any{
 		"prompt": req.Prompt,
@@ -159,7 +159,7 @@ func (e *CogViewExecutor) ImageToImage(req *image.ImageToImageRequest) (*image.I
 		m["response_format"] = req.ResponseFormat
 	}
 
-	// Merge extra passthrough (e.g. image_reference for cogview-3-plus)
+	// Merge extra passthrough (e.g. image_reference for cogview-3-plus/glm-image)
 	for k, v := range req.Extra {
 		m[k] = v
 	}
@@ -174,10 +174,10 @@ func (e *CogViewExecutor) ImageToImage(req *image.ImageToImageRequest) (*image.I
 
 	payload, err := json.Marshal(m)
 	if err != nil {
-		return nil, fmt.Errorf("cogview: marshal request: %w", err)
+		return nil, fmt.Errorf("zhipu: marshal request: %w", err)
 	}
 
-	resp, err := e.doRequest("/v1/images/generations", payload)
+	resp, err := e.doRequest("/images/generations", payload)
 	if err != nil {
 		return nil, err
 	}
@@ -185,16 +185,16 @@ func (e *CogViewExecutor) ImageToImage(req *image.ImageToImageRequest) (*image.I
 
 	raw, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("cogview: read response: %w", err)
+		return nil, fmt.Errorf("zhipu: read response: %w", err)
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("cogview: HTTP %d: %s", resp.StatusCode, string(raw))
+		return nil, fmt.Errorf("zhipu: HTTP %d: %s", resp.StatusCode, string(raw))
 	}
 
 	var oaiResp openaiImageResponse
 	if err := json.Unmarshal(raw, &oaiResp); err != nil {
-		return nil, fmt.Errorf("cogview: unmarshal response: %w", err)
+		return nil, fmt.Errorf("zhipu: unmarshal response: %w", err)
 	}
 
 	task := &image.ImageTask{
@@ -213,17 +213,17 @@ func (e *CogViewExecutor) ImageToImage(req *image.ImageToImageRequest) (*image.I
 	return task, nil
 }
 
-func (e *CogViewExecutor) GetTask(_ string) (*image.ImageTask, error) {
+func (e *ZhipuImageExecutor) GetTask(_ string) (*image.ImageTask, error) {
 	return nil, image.ErrNotSupported
 }
 
-func (e *CogViewExecutor) doRequest(path string, payload []byte) (*http.Response, error) {
+func (e *ZhipuImageExecutor) doRequest(path string, payload []byte) (*http.Response, error) {
 	baseURL := strings.TrimSuffix(e.getBaseURL(), "/")
 	reqURL := baseURL + path
 
 	req, err := http.NewRequest("POST", reqURL, bytes.NewReader(payload))
 	if err != nil {
-		return nil, fmt.Errorf("cogview: create request: %w", err)
+		return nil, fmt.Errorf("zhipu: create request: %w", err)
 	}
 
 	req.Header.Set("Content-Type", "application/json")

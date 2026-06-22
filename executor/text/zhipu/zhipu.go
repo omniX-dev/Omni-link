@@ -33,7 +33,7 @@ func (e *ZhipuExecutor) GetName() string {
 
 func (e *ZhipuExecutor) NativeEndpoints() []executor.Endpoint {
 	return []executor.Endpoint{
-		{Format: translator.FormatOpenAI, PathSuffix: "/v1/chat/completions"},
+		{Format: translator.FormatOpenAI, PathSuffix: "/chat/completions"},
 	}
 }
 
