@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/omniX-dev/OmniX-link/executor/audio"
+	"github.com/omniX-dev/Omni-link/executor/audio"
 )
 
 func init() {

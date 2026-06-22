@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/omniX-dev/OmniX-link/executor/video"
+	"github.com/omniX-dev/Omni-link/executor/video"
 )
 
 func init() {

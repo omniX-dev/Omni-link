@@ -14,7 +14,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/omniX-dev/OmniX-link/executor/image"
+	"github.com/omniX-dev/Omni-link/executor/image"
 )
 
 func init() {

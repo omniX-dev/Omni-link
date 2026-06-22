@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/omniX-dev/OmniX-link/translator"
+	"github.com/omniX-dev/Omni-link/translator"
 )
 
 // ========================================================================

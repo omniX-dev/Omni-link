@@ -9,7 +9,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/omniX-dev/OmniX-link/translator"
+	"github.com/omniX-dev/Omni-link/translator"
 )
 
 // Executor is the per-model execution unit.

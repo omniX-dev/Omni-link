@@ -13,8 +13,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/omniX-dev/OmniX-link/executor/text"
-	"github.com/omniX-dev/OmniX-link/translator"
+	"github.com/omniX-dev/Omni-link/executor/text"
+	"github.com/omniX-dev/Omni-link/translator"
 )
 
 const (

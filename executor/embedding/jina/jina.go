@@ -16,7 +16,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/omniX-dev/OmniX-link/executor/embedding"
+	"github.com/omniX-dev/Omni-link/executor/embedding"
 )
 
 func init() {
